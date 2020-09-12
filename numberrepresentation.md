@@ -43,11 +43,19 @@ If we let the leftmost bit represent the sign, we can now represent negative int
 
 ### Two's Complement
 We define the left most bit as **-2<sup>N-1</sup>**. For example, 1101<sub>2</sub> in two's complement is converted as follows:
-```
-1101_2 	= 1*-2^3 + 1*2^2 + 0*2^1 + 1*2^0
+`0b1101` 	= 1*-2<sup>3</sup> + 1*2<sup>2</sup> + 0*2<sup>1</sup> + 1*2<sup>0</sup>
 		= -8 + 4 + 0 + 1
 		= -3_10
-```
 
 ### Bias Encoding
-A number can be represented as an unsigned integer added to a bias term. Generally, a bias is chosen as **-2<sup>N-1</sup>-1**. 
+A number can be represented as an unsigned integer added to a bias term. Generally, a bias is chosen as **-2<sup>N-1</sup>-1**. For example,
+
+## Number Conversions
+### Binary to Hexadecimal
+Given a base-2 number *x*, we can convert to base-16 as follows:
+1. Group *x* into 4-bit numbers, padding the left side with 0s as needed.
+2. Evaluate each group to a (base-10) number between 0 and 15.
+3. Substitute each group with the base-16 equivalent.
+
+### Hexadecimal to Binary
+Similarly to the reverse, we can simply replace each base-16 digit with its 4-bit equivalent and remove leading 0s.
