@@ -43,9 +43,9 @@ If we let the leftmost bit represent the sign, we can now represent negative int
 
 ### Two's Complement
 We define the left most bit as **-2<sup>N-1</sup>**. For example, 1101<sub>2</sub> in two's complement is converted as follows:
-`0b1101` 	= 1*-2<sup>3</sup> + 1*2<sup>2</sup> + 0*2<sup>1</sup> + 1*2<sup>0</sup>
-		= -8 + 4 + 0 + 1
-		= -3_10
+`0b1101` = 1&ast;-2<sup>3</sup> + 1&ast;2<sup>2</sup> + 0&ast;2<sup>1</sup> + 1&ast;2<sup>0</sup><br>
+		= -8 + 4 + 0 + 1<br>
+		= -3<sub>10</sub>
 
 ### Bias Encoding
 A number can be represented as an unsigned integer added to a bias term. Generally, a bias is chosen as **-2<sup>N-1</sup>-1**. For example,
