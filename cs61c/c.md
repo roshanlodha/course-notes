@@ -8,7 +8,7 @@
 
 ## Computer Organization
 ### Abstraction
-![Alt](https://raw.githubusercontent.com/roshanlodha/course-notes/master/cs61c/images/abstraction.svg "Layers of Abstraction")<br>
+<br>![Alt](https://raw.githubusercontent.com/roshanlodha/course-notes/master/cs61c/images/abstraction.svg "Layers of Abstraction")<br>
 C lets us write programs that can exploit underlying features of the architecture.
 
 ### Compile vs Interpret
@@ -16,7 +16,7 @@ C **compilers** map C programs directly into *architecture-specific* machine cod
 1. Compiling `.c` files to `.o` files
 2. Linking `.o` files to executables.
 	a. **Assembling** is also automatically done, but it is hidden.
-![Alt](https://raw.githubusercontent.com/roshanlodha/course-notes/master/cs61c/images/compilation.svg "Compilation")<br>
+<br>![Alt](https://raw.githubusercontent.com/roshanlodha/course-notes/master/cs61c/images/compilation.svg "Compilation")<br>
 Compilation provides reasonable complication time performance and excellent run-time performance (generally significantly faster than Scheme or Java). However, compiled files, including the executable, are architecture-specific and depend on the processor type and the operating system. Thus, executables must be rebuilt on each new system. Moreover, while compilation can be done in parallel, the linker must be performed sequentially. 
 
 ### C Pre-Processor (CPP)
@@ -148,8 +148,8 @@ The **stack** contains local variables, parameters, and return addresses. It gro
 The **static storage** stores global variables. It is basically permanent for the entire run of the program. <br>
 The **heap** stores data synamically until it is deallocated by the programmer. <br>
 	- The heap is a large pool of memory *not contiguously allocated*. Back-to-back requests for heap memory can result in distant blocks. 
-The **code** is loaded when the program starts and does not change. <br>
-![Alt](https://raw.githubusercontent.com/roshanlodha/course-notes/master/cs61c/images/stack.png "Stack Diagram")<br>
+The **code** is loaded when the program starts and does not change.
+<br>![Alt](https://raw.githubusercontent.com/roshanlodha/course-notes/master/cs61c/images/stack.png "Stack Diagram")<br>
 
 ### Memory Management
 Code and static storage never grow or shrink, and similarly stack space management is easy: frames are created and destroyed in LIFO order. Managing the heap is tricky: memory can be allocated and deallocated at any time. We want `malloc()` and `free()` to run quickly with minimal overhead while simultanouesly avoiding **fragmentation** (seperation of free memory into several small chunks).
