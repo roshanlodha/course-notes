@@ -74,4 +74,25 @@ XOR|^|`xor`
 left logical shift|<<|`ssl`
 right logical shift|>>|`srl `
 right arthmetic shift|N/A|`sra` 
+
 `sra` moves n bits to the right and *inserts high-order sign bits into empty bits*. This is not the same as dividing by 2<sup>n</sup>, as it fails for odd negative numbers. C arthmetic semantics mandate that division should round towards 0.  
+
+### Psuedo-instructions
+**Psuedo-instructions** are shorthand syntax for common assembly idioms.
+```
+mv rd, rs 	# addi rd, rs, 0
+li rd, 13 	# addi rd, x0, 13
+nop 		# addi x0, x0, 0
+```
+
+### Function Calls
+There are 6 fundamental steps in calling a function:
+1. Put arguments in a place where the function can access them.
+2. Transfer control to the function.
+3. Acquire local storage resources needed for the function.
+4. Perform the desired task of the function.
+5. Put the return value in a place where the calling code cna access it. Also restore any registers used, releasing local storage. 
+6. Return control to the point of origin, since a function can be called from several points in a program. 
+
+The eight *argument registers* `a0`-`a7` pass parameters and two return values. The `ra` is the *return address* registers, which is `x1`. <br>
+`jal` links an address to that points to a calling site to allow functions to return to the proper address. Subsequently, we can jump to the address and simultaneously save the address of the following instruction in the `ra` register. Returning from a function is handled by the `jr` or **jump register** instruction. The psuedo-instruction `ret` is equivalent to `jr ra`. 
