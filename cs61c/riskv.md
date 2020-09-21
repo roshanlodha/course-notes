@@ -1,6 +1,9 @@
 # Assembly Language
 The basic job of a CPU is to execute a lot of **instructions**. Instructions are primitive operations. Different CPUs implement different sets of instructions, where the set of instructions of a particular CPI is an *Instruction Set Architecture* (ISA). 
 
+Command Summary:
+<img src="https://">
+
 ## Instruction Set Architecturers
 The early trend was to add more and more instructs to new CPUs to elaborate operations. The RISC philosophy reducted the ISA by:
 1. Keeping the instruction set small and simple amkes it easier to build fast hardware.
@@ -95,4 +98,72 @@ There are 6 fundamental steps in calling a function:
 6. Return control to the point of origin, since a function can be called from several points in a program. 
 
 The eight *argument registers* `a0`-`a7` pass parameters and two return values. The `ra` is the *return address* registers, which is `x1`. <br>
-`jal` links an address to that points to a calling site to allow functions to return to the proper address. Subsequently, we can jump to the address and simultaneously save the address of the following instruction in the `ra` register. Returning from a function is handled by the `jr` or **jump register** instruction. The psuedo-instruction `ret` is equivalent to `jr ra`. 
+`jal` links an address to that points to a calling site to allow functions to return to the proper address. Subsequently, we can jump to the address and simultaneously save the address of the following instruction in the `ra` register. Returning from a function is handled by the `jr` or **jump register** instruction. The psuedo-instruction `ret` is equivalent to `jr ra`. <br>
+The `sp` or **stack pointer** points to the stack, allowing old values to be saved before calling functions and restored upon return. 
+
+#### Function Calls Example
+```
+\\ C:
+int Leaf(int g, int h, int i, int j) {
+	int f;
+	f = (g + h) - (i + J);
+	return f;
+}
+```
+```
+# RISC-V
+addi sp, sp, -8 	# adjust stack for 2 items
+sw s1, 4(sp) 		# save s1 for future use
+sw s0, 0(sp) 		# save s1 for future use
+
+add s0, a0, a1		# f = g + h
+add s1, a2, a3		# s1 = i + j
+add a0, a0, s1		# return value (g + h) - (i + j)
+
+lw s0, 0(sp)		# restore register for s0
+lw s1, 4(sp)		# restore register for s1
+addi sp, sp, 8		# adjust stack to delete 2 items
+ret 				# return
+```
+
+### Nested Calls and Register Conventions
+Consider the falling C code:
+```
+\\ C
+int sumSquare(int x, int y) {
+	return mult(x, x) + y;
+}
+```
+Registers will be clobbered, meaning the return address will be unclear. This is solved by pushing important registers onto the stack. **Register conventions** are a set of generally accepted rules as to which registers will be unchanged after a procedure call (`jal`) and which may be changed.
+* *Saved* registers:
+	* Caller can rely on the values being unchanged across register called
+	* `s0`-`s11` (`s0` is the *stack pointer*)
+* *Temporary* registers:
+	* Caller cannot rely on values being unchanged
+	* `a0`-`a7`, `ra`, `t0`-`t6`
+
+C has 2 types of variables: *automatic* (discarded on function exit) and *static* (exist across exits). 
+The above C code translates to the following RISC code:
+```
+sumSquare:
+	addi sp, sp, -8	# create stack space
+	sw ra, 4(sp)	# save the return address
+	sw a1, 0(s0)	# save the value of y
+	mv a1, a0		# copy x
+	jal mult		# call multiply
+	lw a1, 0(sp)	# restore y
+	add a0, a0, a1 	# add result of mult (stored in a0) with y
+	lw ra, 4(sp)	# restore return address
+	addi sp, sp, 8	# clean up
+	jr ra 			# return
+mult:
+	...
+```
+
+## RISC-V Instruction Formats
+The machine cannot understand RISC-V instructions, and they must be converted into bit strings. As a result, programs are largely distributed in binary form, meaning programs are bound to specific instruction sets. Similarly, new binaries are required for new machines, encouraging backwards compatibility. 
+
+#### Instructions as Numbers
+All RISC instructions are read as a bitstring, meaning instructions are simply numbers. For simplicity, these are generally 32-bit numbers. One work is 32 bits, so we divide instruction word in fields. 
+
+### R-format
